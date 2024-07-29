@@ -1,0 +1,140 @@
+<html><head><base href="https://servicenow.accounting.app/bonds-dashboard,%20awesome,%20now%20can%20you%20take%20out%20the%20text%20saying%20Business%20Oregon%20up%20top?">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funding Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+            font-size: 14px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card h2 {
+            color: #0070ad;
+            margin-top: 0;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 8px;
+            font-size: 1.25em;
+        }
+        .chart-container {
+            height: 400px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <div class="dashboard">
+            <div class="card">
+                <h2>Funding Distribution</h2>
+                <div class="chart-container">
+                    <canvas id="fundingDistributionChart"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <h2>Funding Trends</h2>
+                <div class="chart-container">
+                    <canvas id="fundingTrendsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        // Funding Entities
+        const fundingEntities = [
+            { name: "Bill & Melinda Gates Foundation", color: "#FF6384" },
+            { name: "Oregon State Treasury", color: "#36A2EB" },
+            { name: "US Dept of Housing and Urban Development", color: "#FFCE56" },
+            { name: "Oregon Community Foundation", color: "#4BC0C0" },
+            { name: "Nike Foundation", color: "#9966FF" },
+            { name: "Public Donations", color: "#FF9F40" }
+        ];
+
+        // Funding Distribution Chart
+        const distributionCtx = document.getElementById('fundingDistributionChart').getContext('2d');
+        new Chart(distributionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: fundingEntities.map(entity => entity.name),
+                datasets: [{
+                    data: [5000000, 10000000, 7500000, 3000000, 2000000, 1500000],
+                    backgroundColor: fundingEntities.map(entity => entity.color)
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Funding Distribution by Entity'
+                    },
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+
+        // Funding Trends Chart
+        const trendsCtx = document.getElementById('fundingTrendsChart').getContext('2d');
+        new Chart(trendsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: fundingEntities.map((entity, index) => ({
+                    label: entity.name,
+                    data: Array.from({length: 6}, () => Math.floor(Math.random() * 2000000) + 500000),
+                    borderColor: entity.color,
+                    tension: 0.1
+                }))
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Funding Amount ($)'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Funding Trends Over Time'
+                    },
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+    </script>
+</body></html>
